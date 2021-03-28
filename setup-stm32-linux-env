@@ -1,0 +1,24 @@
+################################################################################
+                   S E T U P   S T M 3 2   O N   D E B I A N
+################################################################################
+
+------------------------------
+ S T E P   1
+------------------------------
+
+ - Download STM32CubeIDE for Debian (64bit)
+   https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide.html
+
+ - Extract the downloaded zip file
+
+ - Add execute permission to the extracted file [ chmod +x st*.sh ]
+
+ - Run the script as super user / sudo
+
+NOTE: Installation of STM32Cube IDE is completed here.
+
+------------------------------
+ S T E P   2
+------------------------------
+
+ - Try to run a blink program 
