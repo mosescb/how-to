@@ -1,0 +1,58 @@
+################################################################################
+                   F L A S H   B B B   F R O M   D E B I A N
+################################################################################
+
+------------------------------
+ S T E P   1
+------------------------------
+
+ - Download an image from the lastest images
+   https://beagleboard.org/latest-images
+
+ - Extract the downloaded file
+   # xz -dk am57xx-debian-10.3-iot-tidl-armhf-2020-04-06-6gb.img.xz
+
+
+------------------------------
+ S T E P   2
+------------------------------
+
+ - Attach SD Card and check it's device name (/dev/sdX)
+   # sudo dmesg
+
+ - Write image to SD Card
+   # sudo dd if=am57xx-debian-10.3-iot-tidl-armhf-2020-04-06-6gb.img of=/dev/sdX bs=1M
+
+
+------------------------------
+ S T E P   3
+------------------------------
+
+ - Insert SD Card in BBB
+
+ - Power ON BBB (Boots from SD Card)
+
+ - Login and modify /boot/uEnv.txt file
+   Uncomment the cmdline option where it sets init as flashing script
+
+ - Save, Sync and Reboot
+
+
+------------------------------
+ S T E P   4
+------------------------------
+
+ - After flashing is done, Boot from SD Card
+
+ - Login and mount emmc device
+
+ - Revert the change made to /boot/uEnv.txt in emmc
+
+ - Save, Sync and PowerOff
+
+ - Remove SD Card
+
+
+******************************
+ Flashing is now complete...
+******************************
