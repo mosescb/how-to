@@ -1,0 +1,93 @@
+################################################################################
+                  A C C E S S   I N T E R N E T   O N   B B B
+
+    BBB <---[USB-ETH(RNDIS)]---> Laptop <---[ETHERNET/LAN/WLAN]---> Internet
+################################################################################
+
+--------------------------------------------------
+------- H O S T   S E T U P   B E G I N S --------
+--------------------------------------------------
+
+ - Disable Firewall
+   # sudo ufw status
+   should print status as inactive
+
+   [If there are any old rules from iptables, flush them out]
+   # sudo iptables -t nat -F
+   # sudo iptables -t mangle -F
+   # sudo iptables -F
+   # sudo iptables -X
+
+ - Enable packet forwarding
+   - Edit /etc/sysctl.conf (mostly non-persistent file)
+     enable port forwarding for both ipv4 and ipv6
+     net.ipv4.ip_forward=1
+     net.ipv6.conf.all.forwarding=1
+
+ - Reload sysctl settings
+   # sudo sysctl --system
+
+ - Execute ifconfig and see the interface name of LAN/WLAN
+   Example: enp1s0 [LAN/WLAN]
+            usb0   [USB-ETH(BBB)]
+
+ - Add iptables rule to forward traffic from USB-ETH to LAN/WLAN
+   # sudo iptables --table nat --append POSTROUTING --out-interface enp1s0 -j MASQUERADE
+   # sudo iptables --append FORWARD --in-interface usb0 -j ACCEPT
+
+
+--------------------------------------------------
+--------- H O S T   S E T U P   E N D S ----------
+--------------------------------------------------
+
+--------------------------------------------------
+-------- B B B   S E T U P   B E G I N S ---------
+--------------------------------------------------
+
+ - Set current date and time
+   # sudo date -s "Wed Mar 31 12:01:07 CEST 2021"
+
+ - Write to RTC to make it persistent
+   # sudo hwclock -w
+
+
+------------------------------
+ M E T H O D   1
+------------------------------
+
+ - Execute: sudo /opt/scripts/network/usb_linux_usb0_ics.sh
+
+
+------------------------------
+ M E T H O D   2
+------------------------------
+
+ - sudo route add default gw 192.168.7.1
+ - echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
+
+
+--------------------------------------------------
+---------- B B B   S E T U P   E N D S -----------
+--------------------------------------------------
+
+DEBUG:
+ - ping 8.8.8.8
+ - ping www.google.com
+ - wget www.google.com
+
+
+NOTE: To reload settings of all system configuration files
+# sudo sysctl --system
+
+system configuration files:
+ - /etc/sysctl.conf
+ - /etc/sysctl.d/*.conf
+ - /lib/sysctl.d/*.conf
+ - /run/systcl.d/*.conf
+ - /usr/lib/susctl.d/*.conf 
+ - /usr/local/lib/sysctl.d/*.conf
+
+
+REFERENCES:
+ - https://gist.github.com/pdp7/d2711b5ff1fbb000240bd8337b859412
+ - https://www.cyberciti.biz/faq/reload-sysctl-conf-on-linux-using-sysctl/
