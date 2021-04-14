@@ -1,0 +1,21 @@
+################################################################################
+                        F I X   D E B U G   I S S U E
+################################################################################
+
+------------------------------
+ S T E P   1
+------------------------------
+
+ - Install libncurses -- 32bit for 32bit boards
+   Add < deb http://ftp.de.debian.org/debian buster main > to /etc/apt/sources.list
+   # sudo apt update
+   # sudo apt install lib32ncurses6
+
+
+------------------------------
+ S T E P   2
+------------------------------
+
+ - Link the libraries to /usr/lib/
+   # sudo ln -s /usr/lib32/libncursesw.so.6 /usr/lib/libncurses.so.5
+   # sudo ln -s /usr/lib32/libncursesw.so.6 /usr/lib/libtinfo.so.5
